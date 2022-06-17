@@ -1,0 +1,54 @@
+
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-deployment
+spec:
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+      - name: express-container
+        image: marmotto/exercise-tracker-backend:latest
+        resources:
+          limits:
+           memory: "128Mi"
+           cpu: "500m"
+        ports:
+        - containerPort: 3000 
+      restartPolicy: Always 
+
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-deployment
+  labels: 
+    app: react-deployment
+spec:
+  selector:
+    matchLabels:
+      app: frontend
+  replicas: 1
+  template: # template for the pods
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+      - name: memories-containers
+        image: marmotto/exercise-tracker-frontend:latest
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+      restartPolicy: Always 
+--- 
